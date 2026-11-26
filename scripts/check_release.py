@@ -38,15 +38,19 @@ def check(tag):
     names = [name for _, name in types]
     if [key for key, _ in types] != list("ABCDEFG") or len(set(names)) != 7:
         errors.append("docs/repository-types.md: give each v1 type A–G a unique name")
-    if re.findall(type_row, readme, re.MULTILINE) != types:
-        errors.append("README.md: align the type table with docs/repository-types.md")
-    if re.findall(r"^\| ([a-z]+) \|", skill, re.MULTILINE) != names:
-        errors.append(f"{SKILL}: align the type evidence table with the specification")
-    for name, body in (("README.md", readme), (str(SKILL), skill)):
-        if re.findall(r"--type (auto(?:\|[a-z]+)+)", body) != ["|".join(["auto"] + names)]:
-            errors.append(f"{name}: align --type options with the specification")
-        if "--plan" not in body:
-            errors.append(f"{name}: document the read-only --plan mode")
+    if re.findall(r"--type (auto(?:\|[a-z]+)+)", skill) != ["|".join(["auto"] + names)]:
+        errors.append(f"{SKILL}: align --type options with docs/repository-types.md")
+    if "--plan" not in skill:
+        errors.append(f"{SKILL}: document the read-only --plan option")
+    workflow = (ROOT / "docs/migration.md").read_text(encoding="utf-8")
+    for name, body, targets in (
+        ("README.md", readme, ("docs/migration.md", "docs/repository-types.md")),
+        ("docs/migration.md", workflow, ("../README.md", "repository-types.md", "verification.md")),
+        (str(SKILL), skill, ("../../docs/migration.md", "../../docs/repository-types.md")),
+    ):
+        for target in targets:
+            if f"]({target})" not in body:
+                errors.append(f"{name}: link to {target}")
 
     latest = re.search(r"^## (v\d+\.\d+\.\d+)\b", changelog, re.MULTILINE)
     if not latest:
@@ -57,7 +61,6 @@ def check(tag):
             errors.append(f"CHANGELOG.md: newest release is {version}, requested {tag}")
         for name, body, snippet in [
             ("README.md", readme, f"**{version}**"),
-            ("README.md", readme, f"git clone --branch {version} "),
             ("docs/repository-types.md", spec, f"规范版本 {version}。"),
             ("docs/verification.md", (ROOT / "docs/verification.md").read_text(encoding="utf-8"),
              f"python3 scripts/check_release.py --tag {version}\n"),

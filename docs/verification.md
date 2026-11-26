@@ -36,7 +36,7 @@ v1 用一个问题把目录设计和测试连起来：**使用者从哪个入口
 在仓库根目录运行以下离线检查，只需 Python 3.8 或更高版本：
 
 ```bash
-python3 scripts/check_release.py --tag v1.0.0
+python3 scripts/check_release.py --tag v1.1.0
 ```
 
-检查覆盖三条读者路径：从首页能打开本地资料，迁移技能与选型表支持相同的类型，安装示例采用待发布标签。发版时还要在干净检出上注册 OMP 技能，确认宿主发现 `/skill:standardize-repo` 并能定位随包规范。具体业务仓的开发与验收记录见[工作流程实例](research-development-workflow.md)。
+在干净检出中运行此命令，核对版本、七种类型、整理流程及其引用。再从首页打开整理流程，确认能找到只读盘点和实施迁移两种模式。业务仓的实测命令见[工作流程实例](research-development-workflow.md)。
