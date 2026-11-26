@@ -1,0 +1,22 @@
+name: Check repository standard
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify the standard and its release references
+        run: |
+          if [[ "$GITHUB_REF_TYPE" == tag ]]; then
+            python3 scripts/check_release.py --tag "$GITHUB_REF_NAME"
+          else
+            python3 scripts/check_release.py
+          fi
