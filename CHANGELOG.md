@@ -1,5 +1,15 @@
 # 版本记录
 
+## v2.0.0 · 2026-11-26
+
+以 Lauren Tan (poteto)《All Code Is Slop (Except Mine)》的确定性软件花园（Software Garden）理念重构核心架构，将规范从“静态目录手册”升级为“面向人类与 Coding Agent 的抗 Slop 仓库设计体系”。
+
+- **三层正交仓库定型模型**：将原 A–G 一维分类重构为「6 类核心交付原型（`lib`、`app`、`assets`、`dataset`、`content`、`research`）+ 生态适配器（Python / ROS / CMake / Web / 插件等）+ 组织拓扑（单包 / 多包 / 多仓 `workspace`）」。原 `software` 拆分为 `lib` 与 `app`，原 `ros` 明确为生态适配器，保留 `--type` 兼容说明。
+- **统一四段式边界契约**：每个交付原型与 `workspace` 均写明“交付物与入口、布局与生态优先、禁止越界、最小可执行不变量”，并补充仓库演进与拆分阈值表。
+- **Feature Map 与 L0–L3 护栏阶梯**：将用户动作地图升级为仓库一等契约；引入“第二次即固化（Review-to-Guardrail）”、报错自带修复指令、封堵逃生舱，以及七类目标的最小 L3 护栏配方。
+- **花园修剪式迁移流程（Weed & Fence）**：[docs/migration.md](docs/migration.md) 在只读盘点中新增 Feature Map 抽取与 Slop 放大器审计，在实施阶段要求“先立基线证据，迁移后必留防退化护栏”。
+- **L3 自检增强**：[scripts/check_release.py](scripts/check_release.py) 升级校验 6+1 正交契约的四段完整性、验收覆盖、技能参数对齐及 v1 别名兼容说明。
+
 ## v1.1.0 · 2026-11-26
 
 - 将只读盘点、实施迁移和验收集中到[仓库整理流程](docs/migration.md)，可手工执行，也可交给能读取规范文件的 Agent。
